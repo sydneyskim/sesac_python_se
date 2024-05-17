@@ -1,0 +1,28 @@
+h1, h2{
+    text-align: center;
+}
+#table{
+    border:1px solid;
+    width:50%;
+    margin:auto;
+}
+#table th{
+    background-color: #c6c6c6;
+    padding: 5px;
+    width: 14%;
+}
+#table td{
+    text-align: center;
+    padding: 10px;
+}
+#table th:first-child, table td:first-child{
+    color: red;
+}
+#table th:last-child, table td:last-child{
+    color: blue;
+}
+.image{
+    width: 50%;
+    height: 250px;
+    display: block; margin: 0 auto;
+}
