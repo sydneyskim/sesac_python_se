@@ -22,7 +22,7 @@ def find_user(name):
             # print(u)
             found_user.append(u)
     return found_user
-        #print("찾는 사용자가 없습니다")
+        print("찾는 사용자가 없습니다")
 
 found = find_user('tony')
 print(f"찾은 사용자: {found}")
