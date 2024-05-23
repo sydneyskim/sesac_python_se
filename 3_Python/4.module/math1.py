@@ -1,6 +1,6 @@
 import math
 
-# 모둘명, 함수명
+# 모둘명, 클래스(객체)명, 함수명 (Class/Object)
 
 print(math.pi)
 
