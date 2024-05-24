@@ -3,7 +3,7 @@
 # 파일
 # 'r' open for reading (default)
 # 'w' open for writing, truncating the file first
-# 'x' create a ne wfile and open it for writing
+# 'x' create a new file and open it for writing
 # 'a' open for writing, appending to the end of the file if exists
 # 'b' binary mode
 
