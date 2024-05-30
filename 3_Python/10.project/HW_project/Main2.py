@@ -67,14 +67,8 @@ if __name__ == "__main__":
                 
     elif choice == "Order":  
         num_order =input("생성할 데이터 갯수를 입력해주세요: ")
-        
-        user_gen = DataGenerator(int(num_order))
-        user_data = user_gen.generate_users()
-        
-        store_gen = StoreGenerator(int(num_order))
-        store_data = store_gen.generate_cafes()
             
-        orders = OrderGenerator(int(num_order), user_data, store_data)
+        orders = OrderGenerator(int(num_order))
         orders.generate_orders()
         
         # 데이터 출력 화면 or 파일
@@ -92,19 +86,7 @@ if __name__ == "__main__":
     elif choice == "OrderItem":  
         num_orderitem =input("생성할 데이터 갯수를 입력해주세요: ")
         
-        user_gen = DataGenerator(int(num_orderitem))
-        users = user_gen.generate_users()
-        
-        store_gen = StoreGenerator(int(num_orderitem))
-        stores = store_gen.generate_cafes()
-        
-        order_gen = OrderGenerator(int(num_orderitem), users, stores)
-        orders = order_gen.generate_orders()
-        
-        item_gen = ItemGenerator(int(num_orderitem))
-        items = item_gen.generate_items()
-        
-        orderitems = OrderItemGenerator(int(num_orderitem), orders, items)
+        orderitems = OrderItemGenerator(int(num_orderitem))
         orderitems.generate_OrderItem()
         
         # 데이터 출력 화면 or 파일
