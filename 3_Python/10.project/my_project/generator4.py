@@ -35,26 +35,29 @@ class DataGenerator:
 
 
 # 메인 함수
-if __name__ == "__main__":
-    num_data = input("생성을 원하는 데이터 개수를 입력하세요: ")
+if __name__ == "__main__": # 외우기!!!!!!!!
+    if len(sys.argv) <= 2: # 사용자 입력 인자가 없을시......  처리 더해줘야함..
+        num_data = int(input("생성을 원하는 데이터 개수를 입력하세요: "))
+    else: 
+        num_data = sys.argv[1] # 입력을 python generator4.py 5 screen 이런식으로 맞게 했을 시
     
     # argv[0] = 실행파일명, arvc[1] = 실제 첫번째 인자값
     # print("입력 인자 확인: 첫 번째 인자: {}, 두 번째 인자: {}".format(sys.argv[0],sys.argv[1])
-    # num_data = input('생성을 원하는 데이터 개수를 입력하세요: ')
 
+    # 우리가 원하는 데이터 형태 생성
     users1 = DataGenerator(int(num_data))
     users1.generate_users()     # 실행할 때마다 새로 생성
 
     # 우리가 원하는 데이터 출력 - 화면, 파일
     my_printer = DataPrinter()
-    print(len(sys.argv))
+    # print(len(sys.argv))
     # 아규먼트 갯수가 2일때 인자에 대한 처리를 한다. 2인 이유 -> 첫번째 인자는 실행파일명이기 때문
-    if len(sys.argv) == 2:
-        # python generator4.py / screen -> 실행값이 찍힘
-        if sys.argv[1] == 'screen':
+    if len(sys.argv) == 3:
+        # python generator4.py 5 screen -> 실행값이 찍힘
+        if sys.argv[2] == 'screen':
             my_printer.print_to_screen(users1.data)
-        # python generator4.py / file -> 실행값이 파일로 저장됨
-        elif sys.argv[1] == 'file':
+        # python generator4.py 5 file -> 실행값이 파일로 저장됨
+        elif sys.argv[2] == 'file':
             my_printer.print_to_file(users1.data)
         else:
             print("지원되지 않는 인자")
