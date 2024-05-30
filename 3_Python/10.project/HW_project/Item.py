@@ -1,6 +1,7 @@
 from generators.IdGenerator import IdGenerator
 from generators.MenuGenerator import MenuGenerator
 
+# 아이템 생성기 클래스
 class ItemGenerator:
     numbers = 1
     item = []

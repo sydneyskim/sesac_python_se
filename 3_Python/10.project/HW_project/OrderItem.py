@@ -2,12 +2,13 @@ from generators.IdGenerator import IdGenerator
 import Order
 import Item
 
+# 주문아이템 생성기 클래스
 class OrderItemGenerator:
     numbers = 1
     data = []
     
     # 초기화
-    def __init__(self, numbers, order_data, item_data):
+    def __init__(self, numbers):
         self.numbers = numbers
         self.id_gen = IdGenerator()
         self.order_id = Order.IdGenerator()

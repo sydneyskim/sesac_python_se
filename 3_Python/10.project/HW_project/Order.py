@@ -3,13 +3,13 @@ from generators.DateTimeGenerator import DateTimeGenerator
 import User
 import Store
 
-
+# 주문 생성기 클래스
 class OrderGenerator:
     numbers = 1
     data = []
     
     # 초기화
-    def __init__(self, numbers, user_data, store_data):
+    def __init__(self, numbers):
         self.numbers = numbers
         self.id_gen = IdGenerator()
         self.time_gen = DateTimeGenerator()
