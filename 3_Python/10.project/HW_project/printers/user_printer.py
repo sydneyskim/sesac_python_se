@@ -10,5 +10,7 @@ class DataPrinter:
     def print_to_file(self, data):
         with open('output/user.csv', 'w', encoding='utf-8') as file:
             writer = csv.writer(file)
+            header_list = ['Id','Name','Birthdate','Gender','Age','Address']
+            writer.writerow(header_list)
             for d in data:
                 writer.writerow(d)

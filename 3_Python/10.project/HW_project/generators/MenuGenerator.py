@@ -16,4 +16,5 @@ class MenuGenerator:
         # 선택된 메뉴의 가격가져오기
         item_price = self.menu[category][item_name]
         item = f"{item_name} {category}"
+        
         return category, item, item_price
