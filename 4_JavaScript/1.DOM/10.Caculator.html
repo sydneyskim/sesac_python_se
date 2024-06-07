@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        .calculator button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: lightgrey;
+            width: 80px;
+            border-radius: 5px;
+            border: 5px;
+        }
+        .calculator input {
+            height: 50px;
+            border-radius: 5px;
+            font-size: 18px;
+            grid-column: span 4;
+        }
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+            max-width: 320px;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 계산기 메인 컨테이너 -->
+    <div class="calculator">
+        <!-- 결과를 표시할 입력 필드 -->
+        <input type="text" id="result" readonly>
+        <!-- 연산자 버튼, 클릭 시 appendOperator 함수 호출 -->
+        <button onclick="appendOperator(this.innerText)">+</button>
+        <button onclick="appendOperator(this.innerText)">-</button>
+        <button onclick="appendOperator(this.innerText)">*</button>
+        <button onclick="appendOperator(this.innerText)">/</button>
+        <!-- 숫자 버튼, 클릭 시 appendNumber 함수 호출-->
+        <button onclick="appendNumber(this.innerText)">7</button>
+        <button onclick="appendNumber(this.innerText)">8</button>
+        <button onclick="appendNumber(this.innerText)">9</button>
+        <button onclick="Caculate()">=</button>
+        <button onclick="appendNumber(this.innerText)">4</button>
+        <button onclick="appendNumber(this.innerText)">5</button>
+        <button onclick="appendNumber(this.innerText)">6</button>
+        <!-- C버튼 클릭시 clearResult 함수 호춯-->
+        <!-- <button onlclick="document.getElementById('result'.value = ''">C</button> -->
+        <button onclick="clearResult()">C</button>
+        <button onclick="appendNumber(this.innerText)">1</button>
+        <button onclick="appendNumber(this.innerText)">2</button>
+        <button onclick="appendNumber(this.innerText)">3</button>
+        <button onclick="appendNumber(this.innerText)">0</button>
+        <script>
+            // 연산자 추가 함수
+            function appendOperator(operator) {
+                const resultInput = document.getElementById("result");
+                const lastInput = resultInput.value.slice(-1);
+
+                // 마지막으로 입력된 값이 연산자이고 새로운 연산자가 입력되면 이전 연산자를 대체
+                if (isOperator(lastInput) && isOperator(operator)) {
+                    resultInput.value = resultInput.value.slice(0, -1) + operator;
+                } else if (!isOperator(lastInput) || !isOperator(operator)) {
+                    resultInput.value += operator;
+                }
+            }
+
+            // 입력된 값이 연산자인지 확인하는 함수
+            function isOperator(value) {
+                return ['+', '-', '*', '/'].includes(value);
+            }
+
+            // 숫자 추가 함수
+            function appendNumber(number) {
+                document.getElementById('result').value += number;
+            }
+            // 결과 필드 초기화 함수
+            function clearResult() {
+                document.getElementById("result").value = "";
+            }
+            // 입력된 식 계산 함수
+            function Caculate() {
+                try{
+                    input = document.getElementById('result');
+                    result = eval(input.value);
+                    input.value = result;
+                } catch (error) {
+                    // console.log("error"); <!-- 실무적으로 xxxxx-->
+                    inpuy.value = "ERROR";
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

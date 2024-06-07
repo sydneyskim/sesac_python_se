@@ -1,0 +1,19 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // DOM = HTML요소로 구성된다. CSS, JS를 포함하지 않음 (CSS, IMG, JS가 로딩 안되었을수도 있음)
+        document.addEventListener('DOMContentLoaded', function() {   
+            console.log('DOM 로딩 완료');
+        });
+        // DOM, CSS, IMG, JS 로딩 완료
+        window.onload = function() {
+            console.log('모든 컨텐츠 로딩 완료');
+        }
+    </script>
+</body>
+</html>

@@ -1,3 +1,2 @@
-홍길동, 고길동
-박수형, 김민히, 정여원, 이태욱, 김승은
-황조현, 이효림, 윤석인, 안새미, 김민서
+(European Computer Manufactures Association)
+출처: https://usefultoknow.tistory.com/entry/ECMA-SCript란-ES란 [UsefulToKnow:티스토리]
