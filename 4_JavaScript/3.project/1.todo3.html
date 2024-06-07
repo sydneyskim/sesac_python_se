@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #todo-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+        .delete-icon {
+            cursor: pointer;
+            color: red;
+            margin-left: 10px;
+        }
+        /* 입력박스 키우기 */
+        input[type="text"] {
+            font-size: 20px;
+            padding: 5px;
+        }
+        /* 버튼 키우기 */
+        button {
+            font-size: 19px;
+            padding: 5px 10px;
+        }
+        /*체크박스 키우기*/
+        input[type="checkbox"]{
+            transform: scale(1.5.0);
+        }
+    </style>
+</head>
+<body>
+    <form id="myToDo">
+        <h1>ToDo-List</h1>
+        <input type="text" placeholder="오늘 할 일을 입력하세요." id="newToDo">
+        <button type="submit" id="addToDo">추가</button>
+        <!-- 리스트를 출력할 공간을 만든다.. div를 여기 만들어두고.. 추후에 여기에 ul을 추가 -->
+        <div id="ToDoList">
+            <ul id="todo-list"></ul>
+        </div>
+    </form>
+    <script>
+        //1. add 버튼을 통해서, 입력한 글자를 아래 리스트에 추가한다.
+        //1-1. add 버튼에 이벤트를 등록한다.
+        //1-1-1. 내가 뭔가를 가져오려고 하는데, 해당 DOM의 id가 없으면,, id부터 추가
+        document.getElementById('myToDo').addEventListener('submit', function(event){
+            event.preventDefault();
+    
+            //1-2. 입력한 글자를 가져온다    
+            const newTodo = document.getElementById('newToDo').value;
+            if(newTodo.trim() === '') 
+                return alert("할 일을 입력해주세요."); // 빈 문자열 검사
+            console.log(newTodo)
+            
+            //1-3. 가져온 글자를 리스트로 추가한다.
+            //새로운 노드를 만들어야함... lidㅘ 해당 데이터를 갖고 있는 "DOM 요소 (element) = 노드"를 만들어서
+            //위에 있는 todo-list라는 ul아래 child로 등록하기
+            const todoList = document.getElementById('todo-list');
+            //새로운 노드 만들기
+            const newItem = document.createElement('li')
+
+            const checkBox = document.createElement('input');
+            checkBox.type = 'checkbox';
+            checkBox.addEventListener('change', function() {
+                if (this.checked) {
+                    newItem.classList.add('completed'); // 체크박스가 선택되면 'completed' 클래스를 추가
+                } else {
+                    newItem.classList.remove('completed'); // 체크박스가 해제되면 'completed' 클래스를 제거
+                }
+            });
+
+            newItem.textContent = newTodo; // 이전에 가져온 newTodo의 글자를 샤로운 li에 입력하기
+            newItem.insertBefore(checkBox, newItem.firstChild); // 체크박스 앞에 추가
+            
+            //노드를 list에 삽입
+            todoList.appendChild(newItem)
+
+            //삭제 아이콘 추가
+            const deleteIcon = document.createElement('span');
+            deleteIcon.textContent ='❌';
+            deleteIcon.classList.add('delete-icon')
+            deleteIcon.addEventListener('click', function() {
+                newItem.remove();
+            })
+            newItem.appendChild(deleteIcon);
+
+            //불편한점 해결하기.. 노드 추가 이후에, 입력컬럼 초기화하기
+            document.getElementById('newToDo').value = '';
+        });
+    </script>
+</body>
+</html>

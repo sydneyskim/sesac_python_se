@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title></head>
+<body>
+    <div id="contentContainer"> 
+        <h1>사용자 검색 페이지</h1>
+        <input type="number" id="userId" placeholder="사용자 번호 입력">
+        <button onclick="searchUser()">검색</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        function searchUser() {
+            const userID = document.getElementById('userId').value; // 위의 DOM에서 사용자 ID 가져오기
+            const url = 'https://jsonplaceholder.typicode.com/users/' + userID;
+            const resultDiv = document.getElementById('result'); // 위의 DOM에서 결과를 출력할 div 가져오기
+
+            // fetch로 요청하기
+            fetch(url)
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error('오류');
+                    }
+                    return response.json();
+                }) //응답 받아서 확인하기 (response으 값을 확인)
+                .then(function(user){
+                    displayUser(user);
+                })
+                .catch(function(error) {
+                    console.error('에러' + error);
+                }) // 처리하다가 오류가 발생하면 오류 처리
+
+        }
+
+        function displayUser(user) {
+            // 어떻게 출력할지 처리하는 함수를 구현
+            // 1. 결과를 출력할 div 가져오기
+            const resultDiv = document.getElementById('result');
+            // 2. 해당 div에다가 innerHTML = <p> 등등해서.. 컨텐츠 채우기...
+            resultDiv.innerHTML = 
+                // '<p>name: ' + user.name + '</p>' +
+                // '<p>email: ' + user.email + '</p>' +
+                // '<p>phone: ' + user.phone + '</p>'+
+                // '<p>website: ' + user.website + '</p>';
+                `<p>name: ${user.name} </p>
+                <p>email: ${user.email} </p>
+                <p>phone: ${user.phone} </p>
+                <p>website: ${user.website} </p>`;
+        }
+    </script>
+</body>
+</html>
