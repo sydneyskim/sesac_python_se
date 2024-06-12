@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1{
+            color:purple;
+            text-align: center;
+        }
+
+        /* 입력창 */
+        .search_form {
+            margin: 20px;
+        }
+        .search_form input[type="text"],
+        .search_form input[type="number"] {
+            margin: 10px;
+            margin-left:10px;
+            border: 1px solid #ccc;
+            height: 40px;
+        }
+
+        .search_form input[type="submit"] {
+            padding: 10px 15px; /* 버튼크기 상하좌우 */
+            background-color: rgb(240, 186, 195);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer; /* 마우스 오버시 손가락모양 */
+
+        }
+        .search_form input[type="submit"]:hover {
+            background-color: rgb(251, 228, 232);
+        }
+        /* 테이블 */
+        table{
+            width: 100%;
+        }
+        th, td{
+            padding:15px;
+            border: 1px solid #f1f1f1
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        tr:hover {
+            background-color: rgb(245, 210, 215);
+        }
+        button {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>USER DETAIL</h1>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Birthday</th>
+            <th>Address</th>
+        </tr>
+        <tr>
+            <td>{{ user['Id'] }}</td>
+            <td>{{ user['Name'] }}</td>
+            <td>{{ user['Gender'] }}</td>
+            <td>{{ user['Age'] }}</td>
+            <td>{{ user['Birthdate'] }}</td>
+            <td>{{ user['Address'] }}</td>
+            <a href="javascript:history.back()">뒤로가기</a>
+        </tr>
+    </table>
+
+</body>
+</html>

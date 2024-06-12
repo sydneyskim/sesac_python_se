@@ -1,0 +1,20 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block title%}{%endblock%}</title>
+</head>
+<body>
+    <div>
+        <h1>{%block h1%}{%endblock%}</h1>
+    </div>
+    <div>
+        {% block menu %}
+        <!-- 동적으로 변경하고싶은 페이지 내용 -->
+        {% endblock %}
+        {% block content %}
+        <!-- 동적으로 변경하고싶은 페이지 내용 -->
+        {% endblock %}
+    </div>
+</body>
+</html>

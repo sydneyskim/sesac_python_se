@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{%block title%}
+홈타이틀
+{%endblock%}
+
+{%block h1%}
+HOME HEADING
+{%endblock%}
+
+{% block menu %}
+<!-- home의 메뉴가 들어갈 곳 -->
+<li>menu1</li>
+<li>menu2</li>
+<li>menu3</li>
+{% endblock %}
+
+{% block content %}
+<!-- 개별 페이지의 내용을 담는 곳-->
+<h2>Individual page contents </h2>
+<p>This is individual page contents <p>
+<img src="{{ url_for('static', filename='img/image.jpg') }}">
+{% endblock %}

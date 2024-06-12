@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{%block title%}
+유저타이틀
+{%endblock%}
+
+{% block menu %}
+
+{%block h1%}
+USER HEADING
+{%endblock%}
+<!-- home의 메뉴가 들어갈 곳 -->
+<li>user</li>
+<li>user2</li>
+<li>user3</li>
+{% endblock %}
+
+{% block content %}
+<!-- 개별 페이지의 내용을 담는 곳-->
+<h2>User page contents </h2>
+<p>This is user page contents <p>
+<img src="{{ url_for('static', filename='img/image.jpg') }}">
+{% endblock %}
