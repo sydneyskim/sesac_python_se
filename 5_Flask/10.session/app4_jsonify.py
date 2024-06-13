@@ -40,7 +40,7 @@ def api_login():
         #     if u['id'] == id and u['pw'] == password:
         #         user = u
         
-    user = next(( u for u in users if u['id'] == id and u['pw'] == password), None) # None은 시작값... 위 네줄을 한줄로 줄인 것
+    user = next(( u for u in users if u['id'] == id and u['pw'] == pw), None) # None은 시작값... 위 네줄을 한줄로 줄인 것
         
     if user:
         session['user'] = user # 로그인한 사용자 정보를 session에 저장
@@ -63,7 +63,7 @@ def profile():
 # 세션에서 user정보 가져와서, 이것을 우리의 user db에서 검색해서
 # pw를 변경한다.    
     if request.method == 'POST':
-        new_pw = request.form['new_password']
+        new_pw = request.form['password']
         # 나의 db 변경
         for u in users:
             if u['id'] == user['id']:
