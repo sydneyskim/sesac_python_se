@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+table{
+        width: 100%;
+    }
+th, td{
+        padding:15px;
+        border: 1px solid #e0f5e8
+    }
+th {
+    background-color: #eef7f3;
+}
+tr:hover {
+    background-color: rgb(210, 245, 233);
+    }
+button {
+    text-align: center;
+}
+input{
+    background-color: rgb(119, 172, 165);
+    color: lightgray;
+    border: 1px ridge;
+    text-align: center;
+}
+input.bto{
+    width: 200px;
+    height: 50px;
+}
+h1{
+    text-align: center;
+}
+#lastcell{
+    text-align: center;
+}
+.btoform{
+    margin-top: 20px;
+}
+</style>
+
+<body>
+    <h1>MY CART</h1>
+    <table border="1">
+        <tr>
+            <th>COFFE IMAGE</th>
+            <th>COFFEE</th>
+            <th>COUNT</th>
+            <th>PRICE</th>
+            <th></th>
+        </tr>
+        {% for item_name, item_info in cart_items.items() %}
+        <tr>
+            <td><img src="{{ url_for('static', filename='images/' + item_info.image) }}" width="100px"></td>
+            <td>{{ item_info.name }}</td>
+            <td>{{ item_info.quantity }}</td>
+            <td id="lastcell">{{ item_info.price * item_info.quantity }}WON</td>
+            <td>
+                <form action="{{ url_for('remove_item_from_cart', item_name=item_name)}}" method="GET">
+                    <input type="submit" value="DELETE">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4">TOTAL: {{ total_price }} WON</td>
+            <td id="lastcell">
+                <form action="{{ url_for('clear_cart')}}" method="GET">
+                    <input type="submit" value="CLEAR">
+                </form>
+            </td>
+        </tr>
+    </table>
+    <form action="{{ url_for('index')}}" method="GET" class="btoform">
+        <input type="submit" value="BACK TO ORDER" class="bto">
+    </form>
+</body>
+</html>

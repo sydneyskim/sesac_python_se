@@ -1,0 +1,51 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            border: 1px ridge;
+            width: 200px;
+            height: 350px;
+            display: inline-block;
+            text-align: center;
+        }
+        .add{
+            background-color: rgb(119, 172, 165);
+            width: 50px;
+            color: lightgray;
+            border: 1px ridge;
+        }
+        .tocart{
+            background-color: rgb(35, 131, 104);
+            width: 200px;
+            height: 50px;
+            color: lightgray;
+            border: 1px ridge;
+            margin-top: 20px;
+        }
+        h1{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>ORDER</h1>
+    <!-- 상품 목록 li 리스트로 출력하기 -->
+        {% for item_name, item_info in items.items() %}
+        <div>
+            <img src="{{ url_for('static', filename='images/' + item_info.image) }}" width="200px">
+            <h3>{{ item_info.name }}</h3>
+            <p>{{item_info.price}}원</p>
+            <form action="{{ url_for('add_to_cart', item_name=item_name)}}" method="GET">
+                <input type="submit" value="ADD" class="add">
+            </form>
+        </div>
+        {% endfor %}
+    <br>
+    <form action="{{ url_for('view_cart')}}" method="GET" id="form2">
+        <input type="submit" value="CART" class="tocart">
+    </form>
+</body>
+</html>
