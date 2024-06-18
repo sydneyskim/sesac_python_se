@@ -9,7 +9,7 @@ app.permanent_session_lifetime = timedelta(minutes=5) # 5분후에 만료시키�
 items = {
     'item1': {'name': 'Americano', 'price': 4500, 'image': 'item1.jpg'},
     'item2': {'name': 'Cafe Latte', 'price': 5000, 'image': 'item2.jpg'},
-    'item3': {'name': 'Frappuccino', 'price': 6500, 'image': 'item3.jpg'},
+    'item3': {'name': 'Frapuccino', 'price': , 'image': 'item3.jpg'},
 }
 
 @app.route('/')
