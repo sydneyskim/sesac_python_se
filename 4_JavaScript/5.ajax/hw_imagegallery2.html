@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .gallery {
+            position: relative;
+            width: 300px; /* 이미지 너비에 맞춤 */
+            margin: 20px auto;
+        }
+        #large-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .button {
+            position: absolute;
+            top: 50%; /* 버튼을 이미지 중앙 높이에 위치 */
+            transform: translateY(-50%); /* 버튼의 중앙을 정확히 조정 */
+            background-color: rgba(255, 255, 255, 0.5); /* 버튼 배경 반투명화 */
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+        #prev {
+            left: 0; /* 왼쪽 정렬 */
+        }
+        #next {
+            right: 0; /* 오른쪽 정렬 */
+        }
+    </style>
+</head>
+<body>
+    <h1>이미지 갤러리</h1>
+    <div class="gallery">
+        <button class="button" id="prev">Previous</button>
+        <img id="large-image" src="images/cutie1.jpg">
+        <button class="button" id="next">Next</button>
+    </div>
+    <script>
+        const images = ["images/cutie1.jpg", "images/cutie2.jpg", "images/cutie3.jpg"];
+        let currentIndex = 0; // 현재 이미지 인덱스 초기화
+
+        document.getElementById("prev").addEventListener('click', function() {
+            // 이전 이미지로
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            document.getElementById('large-image').src = images[currentIndex];
+        });
+
+        document.getElementById("next").addEventListener('click', function() {
+            // 다음 이미지로
+            currentIndex = (currentIndex + 1) % images.length;
+            document.getElementById('large-image').src = images[currentIndex];
+        });
+    </script>
+</body>
+</html>

@@ -3,6 +3,13 @@
 
 {% block content %}
 <H1>Login Page</H1>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p style="color:red">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 <form method="POST">
     <label for="username">Username:</label>
     <input type="text" name="username" required>
@@ -12,4 +19,5 @@
     <br>
     <button type="submit">Login</button>
 </form>
+<p>게정이 없나요? <a href="{{ url_for('signin') }}">여기를 클릭하세요</a></p>
 {% endblock %}

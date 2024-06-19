@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}USER PAGE{% endblock %}
+
+{% block content %}
+<H1>Account Page</H1>
+<form action="#" method="POST">
+    <p>Change Account</p>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p style="color:red">{{ msg }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <p>
+        <input type="email" name="email" placeholder="이메일주소를 입력하세요" value="{{ email if email }}">
+        <input type="submit" name="action" value="submit">
+    </p>
+    <p>
+        <input type="password" name="password" placeholder="새로운 비밀번호를 입력하세요">
+        <input type="submit" name="action" value="submit">
+    </p>
+    <p>Delete Account
+    <input type="submit" name="action" value="delete">
+    </p>
+</form>
+{% endblock %}
