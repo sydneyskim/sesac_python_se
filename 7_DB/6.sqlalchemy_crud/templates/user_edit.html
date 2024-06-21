@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 수정페이지</title>
+</head>
+<body>
+    <h1>사용자 수정하기</h1>
+    <form action="{{ url_for ('update_user', id=user.id) }}" method="post">
+        <input type="text" name="name" value="{{ user.name }}" placeholder="이름을 입력해주세요">
+        <input type="number" name="age" value="{{ user.age }}" placeholder="나이를 입력해주세요">
+        <button type="submit">수정완료</button>
+    </form>
+    </form>
+</body>
+</html>
