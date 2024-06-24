@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for m in movies%}
+    <li>
+        순위: {{ m.rank}}
+        제목: {{ m.title}}
+        관객수: {{ m.audience}}
+    </li>
+</body>
+</html>
