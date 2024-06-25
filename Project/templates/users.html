@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+</head>
+<body>
+    <input type="text" id="search-input" placeholder="Please enter user's name">
+    <button onclick="searchUser()">Search</button>
+    <table border="1" id="user-table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>gender</th>
+                <th>age</th>
+                <th>birthday</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.Id }}</td>
+                <td>{{ user.Name }}</td>
+                <td>{{ user.Gender }}</td>
+                <td>{{ user.Age }}</td>
+                <td>{{ user.Birthdate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function searchUser() {
+            const name = document.getElementById('search-input').value;
+            window.location.href = `/crm/users?name=${encodeURIComponent(name)}`;
+        }
+    </script>
+</body>
+</html>
