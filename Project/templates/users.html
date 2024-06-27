@@ -1,40 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Page</title>
-</head>
-<body>
-    <input type="text" id="search-input" placeholder="Please enter user's name">
+{% extends "base.html" %}
+
+{% block title %}
+User Page
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f8f8f8;
+        color: #333;
+    }
+    input[type="text"], select {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #555;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .pagination {
+        margin: 20px 0;
+        text-align: center;
+    }
+    .pagination a {
+        margin: 0 5px;
+        text-decoration: none;
+        color: #333;
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .pagination a:hover {
+        background-color: #ddd;
+    }
+    #search-input {
+        width: 200px;
+    }
+</style>
+
+<div>
+    &nbsp; Name: <input type="text" id="search-input" placeholder="Please enter user's name" value="{{ request.args.get('name', '') }}">
+    &nbsp; Gender: <select id="gender-select">
+        <option value="">Select Gender</option>
+        <option value="Male" {% if request.args.get('gender') == 'Male' %}selected{% endif %}>Male</option>
+        <option value="Female" {% if request.args.get('gender') == 'Female' %}selected{% endif %}>Female</option>
+    </select>
     <button onclick="searchUser()">Search</button>
-    <table border="1" id="user-table">
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>gender</th>
-                <th>age</th>
-                <th>birthday</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.Id }}</td>
-                <td>{{ user.Name }}</td>
-                <td>{{ user.Gender }}</td>
-                <td>{{ user.Age }}</td>
-                <td>{{ user.Birthdate }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <script>
-        function searchUser() {
-            const name = document.getElementById('search-input').value;
-            window.location.href = `/crm/users?name=${encodeURIComponent(name)}`;
-        }
-    </script>
-</body>
-</html>
+</div>
+
+<table id="user-table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>gender</th>
+            <th>age</th>
+            <th>birthday</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.Id }}</td>
+            <td>{{ user.Name }}</td>
+            <td>{{ user.Gender }}</td>
+            <td>{{ user.Age }}</td>
+            <td>{{ user.Birthdate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    {% if page > 1 %}
+    <a href="/crm/users/?page={{ page - 1 }}&per_page={{ per_page }}&name={{ request.args.get('name', '') }}&gender={{ request.args.get('gender', '') }}">Previous</a>
+    {% endif %}
+    <span>Page {{ page }}</span>
+    <a href="/crm/users/?page={{ page + 1 }}&per_page={{ per_page }}&name={{ request.args.get('name', '') }}&gender={{ request.args.get('gender', '') }}">Next</a>
+</div>
+
+<script>
+    function searchUser() {
+        const name = document.getElementById('search-input').value;
+        const gender = document.getElementById('gender-select').value;
+        window.location.href = `/crm/users/?name=${encodeURIComponent(name)}&gender=${encodeURIComponent(gender)}`;
+    }
+</script>
+{% endblock %}
