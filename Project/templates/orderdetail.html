@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+User Detail Page
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f8f8f8;
+        color: #333;
+    }
+    input[type="text"], select {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #555;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .infos {
+            font-size: 24px;
+            text-align: center;
+        }
+</style>
+<p class="infos">상품주문정보</p>
+    <table id="order-detail-table">
+        <thead>
+            <tr>
+                <th>OrderItem Id</th>
+                <th>Order Id</th>
+                <th>Item Id</th>
+                <th>Item Name</th>
+        </thead>
+        <tbody>
+            {% for od in order_detail %}
+            <tr>
+                <td>{{ od.OrderItemId }}</td>
+                <td>{{ od.OrderId }}</td>
+                <td>{{ od.ItemId }}</td>
+                <td>{{ od.ItemName }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

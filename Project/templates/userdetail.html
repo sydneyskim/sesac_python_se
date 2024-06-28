@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+User Detail Page
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f8f8f8;
+        color: #333;
+    }
+    input[type="text"], select {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #555;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .infos {
+            font-size: 24px;
+            text-align: center;
+        }
+</style>
+<p class="infos">고객정보</p>
+    <table id="order-detail-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Birthday</th>
+                <th>Address</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ user_detail.Id }}</td>
+                <td>{{ user_detail.Name }}</td>
+                <td>{{ user_detail.Gender }}</td>
+                <td>{{ user_detail.Age }}</td>
+                <td>{{ user_detail.Birthdate }}</td>
+                <td>{{ user_detail.Address }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="infos">주문정보</p>
+    <table id="user-order-detail-table">
+        <thead>
+            <tr>
+                <th>Order id</th>
+                <th>Purchased date</th>
+                <th>Purchased location</th>
+            </tr>
+            </tr>
+        </thead>
+        <tbody>
+            {% for uod in user_order_detail %}
+            <tr>
+                <td>{{ uod.OrderId }}</td>
+                <td>{{ uod.PurchasedDate }}</td>
+                <td>{{ uod.PurchasedLocation }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

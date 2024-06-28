@@ -66,17 +66,72 @@ def get_total_user_by_name_and_gender(name, gender):
     result = get_query(query, ('%' + name + '%', gender))
     return result[0]['count'] if result else 0
 
+# user 상세
+def get_userdetail(user_id):
+    query = "SELECT * FROM users WHERE Id = ?"
+    return get_query(query, (user_id,))
+
+def get_userorderdetail(user_id):
+    query = '''
+        SELECT 
+            o.Id AS OrderId,
+            o.OrderAt AS PurchasedDate,
+            s.Id AS PurchasedLocation,
+            o.UserId AS UserId
+        FROM 
+            orders o
+        JOIN 
+            stores s ON o.StoreId = s.Id 
+        WHERE UserId = ?;
+    '''
+    return get_query(query, (user_id,))
+
 ### Orders ###
 # order 전체 가져오기
 def get_orders(page, per_page):
     offset = (page - 1) * per_page
     query = "SELECT * FROM orders LIMIT ? OFFSET ?"
     return get_query(query, (per_page, offset))
+
 # order 전체 count
 def get_total_orders():
     query = "SELECT COUNT(*) as count FROM orders"
     result = get_query(query)
     return result[0]['count'] if result else 0
+
+# Order 날짜 검색결과
+def get_order_by_date(date, page, per_page):
+    offset = (page - 1) * per_page
+    query = "SELECT * FROM orders WHERE OrderAt LIKE ? LIMIT ? OFFSET ?"
+    return get_query(query, ('%' + date + '%', per_page, offset))
+
+# Order 날짜 검색결과 count
+def get_total_order_by_date(date):
+    query = "SELECT COUNT(*) as count FROM orders WHERE OrderAt LIKE ?"
+    result = get_query(query, (date,))
+    return result[0]['count'] if result else 0
+
+# order 날짜 검색 결과 count
+def get_total_orders():
+    query = "SELECT COUNT(*) as count FROM orders"
+    result = get_query(query)
+    return result[0]['count'] if result else 0
+
+# order 상세
+def get_orderdetail(order_id):
+    query = '''
+        SELECT 
+            oi.Id AS OrderItemId,
+            oi.OrderId AS OrderId,
+            oi.ItemId AS ItemId,
+            i.Name AS ItemName
+        FROM 
+            orderitems oi
+        JOIN 
+            items i ON oi.ItemId = i.Id
+        WHERE OrderId = ?;
+    '''
+    return get_query(query, (order_id,))
 
 ### OrderItems ###
 # orderItem 전체 가져오기

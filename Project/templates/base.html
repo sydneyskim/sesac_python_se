@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <style>
+        img {
+            width:80px;
+            border-radius: 10px;
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
@@ -40,6 +44,7 @@
 </head>
 <body>
     <nav>
+        <img src="{{ url_for('static', filename='images/secrm.jpg') }}" alt="CRM Logo">
         <a href="{{ url_for('crm_users') }}">User</a>
         <a href="{{ url_for('crm_orders') }}">Order</a>
         <a href="{{ url_for('crm_orderItems') }}">Order Item</a>

@@ -36,15 +36,13 @@ Order Page
         color: #333;
         padding: 8px 16px;
         border: 1px solid #ddd;
-        margin-left: -5px;
+        margin-left: -1px;
     }
-    .pagination a:first-child{
+    .pagination a:first-child {
         border-radius: 4px 0px 0px 4px;
-        border-width: 1px 1px 1px 0px;
     }
-    .pagination a:last-child{
+    .pagination a:last-child {
         border-radius: 0px 4px 4px 0px;
-        border-width: 1px 1px 1px 0px;
     }
     .pagination a:hover {
         background-color: #ddd;
@@ -53,12 +51,39 @@ Order Page
         width: 200px;
     }
     .current {
-        background-color: #ddd;;
+        background-color: #ddd;
         padding: 8px 16px;
         border: 1px solid #ddd;
-        margin-left: -5px;
+        margin-left: -1px;
+    }
+    .search-div {
+        height: 60px;
+    }
+    input {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #555;
     }
 </style>
+<div class="search-div">
+    <label for="date">&nbsp; Select a Date:
+        <input type="date" id="date" min="2010-01-01" value="{{ date }}">
+    </label>
+    <button onclick="searchOrder()">Search</button>
+</div>
 <table id="order-table">
     <thead>
         <tr>
@@ -71,7 +96,7 @@ Order Page
     <tbody>
         {% for order in orders %}
         <tr>
-            <td>{{ order.Id }}</td>
+            <td><a href="/crm/orderdetail/?orderid={{ order.Id }}">{{ order.Id }}</a></td>
             <td>{{ order.OrderAt }}</td>
             <td>{{ order.StoreId }}</td>
             <td>{{ order.UserId }}</td>
@@ -82,21 +107,35 @@ Order Page
 
 <div class="pagination">
     {% if page > 1 %}
-    <a href="/crm/orders/?page={{ page - 1 }}&per_page={{ per_page }}">Previous</a>
+    <a href="/crm/orders/?page={{ page - 1 }}&per_page={{ per_page }}{% if date %}&date={{ date }}{% endif %}">Previous</a>
     {% endif %}
     
     {% for p in range(1, total_pages + 1) %}
         {% if p == page %}
             <span class="current">{{ p }}</span>
         {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
-            <a href="/crm/orders/?page={{ p }}&per_page={{ per_page }}">{{ p }}</a>
+            <a href="/crm/orders/?page={{ p }}&per_page={{ per_page }}{% if date %}&date={{ date }}{% endif %}">{{ p }}</a>
         {% elif p == page - 3 or p == page + 3 %}
             <span>...</span>
         {% endif %}
     {% endfor %}
     
     {% if page < total_pages %}
-    <a href="/crm/orders/?page={{ page + 1 }}&per_page={{ per_page }}">Next</a>
+    <a href="/crm/orders/?page={{ page + 1 }}&per_page={{ per_page }}{% if date %}&date={{ date }}{% endif %}">Next</a>
     {% endif %}
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('date');
+        dateInput.max = today;
+        if (!dateInput.value) {
+            dateInput.value = today;
+        }
+    });
+    function searchOrder() {
+        const date = document.getElementById('date').value;
+        window.location.href = `/crm/orders/?date=${encodeURIComponent(date)}&per_page={{ per_page }}`;
+    }
+</script>
 {% endblock %}
