@@ -77,6 +77,10 @@ Order Page
     button:hover {
         background-color: #555;
     }
+    table a:link, table a:visited {
+        color: blue;
+        text-decoration: none;
+    }
 </style>
 <div class="search-div">
     <label for="date">&nbsp; Select a Date:
@@ -96,7 +100,7 @@ Order Page
     <tbody>
         {% for order in orders %}
         <tr>
-            <td><a href="/crm/orderdetail/?orderid={{ order.Id }}">{{ order.Id }}</a></td>
+            <td><a href="/crm/orderitemdetail/?orderid={{ order.Id }}">{{ order.Id }}</a></td>
             <td>{{ order.OrderAt }}</td>
             <td>{{ order.StoreId }}</td>
             <td>{{ order.UserId }}</td>

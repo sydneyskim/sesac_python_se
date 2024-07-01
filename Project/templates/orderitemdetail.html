@@ -51,22 +51,22 @@ User Detail Page
         text-decoration: none;
     }
 </style>
-<p class="infos">주문ID별 주문아이템정보</p>
-    <table id="orderitem-detail-table">
+<p class="infos">상품주문정보</p>
+    <table id="order-detail-table">
         <thead>
             <tr>
+                <th>OrderItem Id</th>
                 <th>Order Id</th>
-                <th>Ordered At</th>
-                <th>Store Id</th>
-                <th>User Id</th>
+                <th>Item Id</th>
+                <th>Item Name</th>
         </thead>
         <tbody>
-            {% for oid in orderitem_detail %}
+            {% for od in order_detail %}
             <tr>
-                <td>{{ oid.OrderId }}</td>
-                <td>{{ oid.OrderedAt }}</td>
-                <td><a href="/crm/storedetail/?storeid={{ oid.StoreId }}">{{ oid.StoreId }}</a></td>
-                <td><a href="/crm/userdetail/?userid={{ oid.UserId  }}">{{ oid.UserId }}</a></td>
+                <td>{{ od.OrderItemId }}</td>
+                <td><a href="/crm/orderdetail/?orderid={{ od.OrderId }}">{{ od.OrderId }}</a></td>
+                <td><a href="/crm/itemdetail/?itemid={{ od.ItemId }}">{{ od.ItemId }}</a></td>
+                <td>{{ od.ItemName }}</td>
             </tr>
             {% endfor %}
         </tbody>

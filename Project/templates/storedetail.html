@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-User Detail Page
+Store Detail Page
 {% endblock %}
 
 {% block content %}
@@ -51,22 +51,40 @@ User Detail Page
         text-decoration: none;
     }
 </style>
-<p class="infos">주문ID별 주문아이템정보</p>
-    <table id="orderitem-detail-table">
+<p class="infos">상점정보</p>
+    <table id="store-detail-table">
         <thead>
             <tr>
-                <th>Order Id</th>
-                <th>Ordered At</th>
-                <th>Store Id</th>
-                <th>User Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Address</th>
         </thead>
         <tbody>
-            {% for oid in orderitem_detail %}
+            {% for sd in store_detail %}
             <tr>
-                <td>{{ oid.OrderId }}</td>
-                <td>{{ oid.OrderedAt }}</td>
-                <td><a href="/crm/storedetail/?storeid={{ oid.StoreId }}">{{ oid.StoreId }}</a></td>
-                <td><a href="/crm/userdetail/?userid={{ oid.UserId  }}">{{ oid.UserId }}</a></td>
+                <td>{{ sd.Name }}</td>
+                <td>{{ sd.Type }}</td>
+                <td>{{ sd.Address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="infos">월간 매출액</p>
+    <table id="monthly-revenue-table">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Revenue</th>
+                <th>Count</th>
+            </tr>
+            </tr>
+        </thead>
+        <tbody>
+            {% for smr in store_monthly_revenue %}
+            <tr>
+                <td>{{ smr.OrderMonth }}</td>
+                <td>{{ smr.TotalRevenue }}</td>
+                <td>{{ smr.OrderCount }}</td>
             </tr>
             {% endfor %}
         </tbody>

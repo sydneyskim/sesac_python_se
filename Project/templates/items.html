@@ -58,6 +58,10 @@ Item Page
         border: 1px solid #ddd;
         margin-left: -5px;
     }
+    table a:link, table a:visited {
+        color: blue;
+        text-decoration: none;
+    }
 </style>
 <table id="item-table">
     <thead>
@@ -71,7 +75,7 @@ Item Page
     <tbody>
         {% for item in items %}
         <tr>
-            <td>{{ item.Id }}</td>
+            <td><a href="/crm/itemdetail/?itemid={{ item.Id }}">{{ item.Id }}</a></td>
             <td>{{ item.Type }}</td>
             <td>{{ item.Name }}</td>
             <td>{{ item.UnitPrice }}</td>

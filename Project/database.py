@@ -37,7 +37,7 @@ def get_user_by_name(name, page, per_page):
     return get_query(query, ('%' + name + '%', per_page, offset))
 
 # user 이름 검색결과 count
-def get_total_user_by_name(name, page, per_page):
+def get_total_user_by_name(name):
     query = "SELECT COUNT(*) as count FROM users WHERE Name LIKE ?"
     result = get_query(query, ('%' + name + '%',))
     return result[0]['count'] if result else 0
@@ -86,6 +86,51 @@ def get_userorderdetail(user_id):
     '''
     return get_query(query, (user_id,))
 
+# 유저별 자주 방문한 매장
+def get_top5_stores(user_id):
+    query = '''
+        SELECT 
+            o.UserId AS UserID,
+            o.StoreId AS StoreID,
+            s.Name AS StoreName,
+            COUNT(o.Id) AS VisitCount
+        FROM 
+            orders o
+        JOIN 
+            stores s ON o.StoreId = s.Id
+        WHERE 
+            o.UserId = ?
+        GROUP BY 
+            o.UserId, o.StoreId
+        ORDER BY 
+            VisitCount DESC
+        LIMIT 5;
+    '''
+    return get_query(query, (user_id,))
+
+# 유저별 자주 주문한 상품
+def get_top5_items(user_id):
+    query = '''
+        SELECT 
+            o.UserId AS UserID,
+            i.Name AS ItemName,
+            COUNT(oi.ItemId) AS OrderCount
+        FROM 
+            orders o
+        JOIN 
+            orderitems oi ON o.Id = oi.OrderId
+        JOIN 
+            items i ON oi.ItemId = i.Id
+        WHERE 
+            o.UserId = ?
+        GROUP BY 
+            o.UserId, i.Name
+        ORDER BY 
+            OrderCount DESC
+        LIMIT 5;
+    '''
+    return get_query(query, (user_id,))
+
 ### Orders ###
 # order 전체 가져오기
 def get_orders(page, per_page):
@@ -117,8 +162,8 @@ def get_total_orders():
     result = get_query(query)
     return result[0]['count'] if result else 0
 
-# order 상세
-def get_orderdetail(order_id):
+# order 상세(orderitem)
+def get_orderitemdetail(order_id):
     query = '''
         SELECT 
             oi.Id AS OrderItemId,
@@ -146,6 +191,32 @@ def get_total_orderItems():
     result = get_query(query)
     return result[0]['count'] if result else 0
 
+# orderItem 상세
+# order 상세
+def get_orderdetail(order_id):
+    query = '''
+        SELECT 
+            "Id" AS OrderId,
+            "OrderAt" AS OrderedAt,
+            "StoreId" AS StoreId,
+            "UserId" AS UserId
+        FROM "orders"
+        WHERE "Id" = ?;
+    '''
+    return get_query(query, (order_id,))
+
+# item 상세
+def get_itemdetail(item_id):
+    query = '''
+        SELECT 
+            "Name" AS Name , 
+            "UnitPrice" AS UnitPrice
+        FROM "items"
+        WHERE "Id" = ?;
+    '''
+    return get_query(query, (item_id,))
+
+
 ### Items ###
 # item 전체 가져오기
 def get_items(page, per_page):
@@ -166,8 +237,68 @@ def get_stores(page, per_page):
     query = "SELECT * FROM stores LIMIT ? OFFSET ?"
     return get_query(query, (per_page, offset))
 
+# store 상세
+def get_storedetail(store_id):
+    query = '''
+        SELECT 
+            "Name" AS Name , 
+            "Type" As Type ,
+            "Address" AS Address
+        FROM "stores"
+        WHERE "Id" = ?;
+    '''
+    return get_query(query, (store_id,))
+
+
 # store 전체 count
 def get_total_stores():
     query = "SELECT COUNT(*) as count FROM stores"
     result = get_query(query)
     return result[0]['count'] if result else 0
+
+# 상점별 월간 매출
+def get_monthlyrevenue(store_id):
+    query = '''
+        SELECT 
+            o.StoreId AS StoreID,
+            strftime('%Y-%m', o.OrderAt) AS OrderMonth,
+            SUM(i.UnitPrice) AS TotalRevenue,
+            COUNT(o.Id) AS OrderCount
+        FROM 
+            orders o
+        JOIN 
+            orderitems oi ON o.Id = oi.OrderId
+        JOIN 
+            items i ON oi.ItemId = i.Id
+        WHERE 
+            o.StoreId = ?
+        GROUP BY 
+            o.StoreId, strftime('%Y-%m', o.OrderAt)
+        ORDER BY 
+            o.StoreId, OrderMonth;
+    '''
+    return get_query(query, (store_id,))
+
+# 아이템별 월간 매출
+def get_item_monthlyrevenue(item_id):
+    query = '''
+        SELECT 
+            i.Id AS ItemID,
+            strftime('%Y-%m', o.OrderAt) AS OrderMonth,
+            SUM(i.UnitPrice) AS TotalRevenue,
+            COUNT(oi.Id) AS OrderCount
+        FROM 
+            orders o
+        JOIN 
+            orderitems oi ON o.Id = oi.OrderId
+        JOIN 
+            items i ON oi.ItemId = i.Id
+        WHERE 
+            i.Id = ?
+        GROUP BY 
+            i.Id, strftime('%Y-%m', o.OrderAt)
+        ORDER BY 
+            i.Id, OrderMonth;
+    '''
+    return get_query(query, (item_id,))
+

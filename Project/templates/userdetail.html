@@ -45,7 +45,11 @@ User Detail Page
     .infos {
             font-size: 24px;
             text-align: center;
-        }
+    }
+    table a:link, table a:visited {
+        color: blue;
+        text-decoration: none;
+    }
 </style>
 <p class="infos">고객정보</p>
     <table id="order-detail-table">
@@ -82,11 +86,29 @@ User Detail Page
         <tbody>
             {% for uod in user_order_detail %}
             <tr>
-                <td>{{ uod.OrderId }}</td>
+                <td><a href="/crm/orderitemdetail/?orderid={{ uod.OrderId }}">{{ uod.OrderId }}</a></td>
                 <td>{{ uod.PurchasedDate }}</td>
-                <td>{{ uod.PurchasedLocation }}</td>
+                <td><a href="/crm/storedetail/?storeid={{ uod.PurchasedLocation }}">{{ uod.PurchasedLocation }}</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    
+    <ul>
+    <p>자주 방문한 매장 TOP5</p>
+    {% for store in top5_stores %}
+    <li>
+        <span>{{ store.StoreName }} ({{ store.VisitCount }}번 방문)</span> 
+    </li>
+    {% endfor %}
+    </ul>
+    
+    <ul>
+    <p>자주 주문한 상품명 TOP5</p>
+        {% for item in top5_items %}
+        <li>
+            <span>{{ item.ItemName }} ({{ item.OrderCount }}번 주문)</span>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

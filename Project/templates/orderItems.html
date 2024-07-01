@@ -58,6 +58,10 @@ OrderItem Page
         border: 1px solid #ddd;
         margin-left: -5px;
     }
+    table a:link, table a:visited {
+        color: blue;
+        text-decoration: none;
+    }
 </style>
 <table id="orderItem-table">
     <thead>
@@ -71,8 +75,8 @@ OrderItem Page
         {% for orderItem in orderItems %}
         <tr>
             <td>{{ orderItem.Id }}</td>
-            <td>{{ orderItem.OrderId }}</td>
-            <td>{{ orderItem.ItemId }}</td>
+            <td><a href="/crm/orderdetail/?orderid={{ orderItem.OrderId }}">{{ orderItem.OrderId }}</a></td>
+            <td><a href="/crm/itemdetail/?itemid={{ orderItem.ItemId }}">{{ orderItem.ItemId }}</a></td>
         </tr>
         {% endfor %}
     </tbody>

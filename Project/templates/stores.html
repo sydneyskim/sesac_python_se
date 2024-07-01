@@ -58,7 +58,44 @@ Store Page
         border: 1px solid #ddd;
         margin-left: -5px;
     }
+    table a:link, table a:visited {
+        color: blue;
+        text-decoration: none;
+    }
+    .search-div {
+        height: 60px;
+    }
+    #search-input {
+        width: 200px;
+    }
+    input[type="text"], select {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #555;
+    }
 </style>
+<div class="search-div">
+    &nbsp; Name: <input type="text" id="search-input" placeholder="Enter franchise café name" value="{{ request.args.get('name', '') }}">
+    &nbsp; Location: <select id="location-select">
+        <option value="">Select Location</option>
+        <option value="seoul" {% if request.args.get('Address', '').startswith('서울') %}selected{% endif %}>서울</option>
+        <option value="daejeon" {% if request.args.get('Address', '').startswith('대전') %}selected{% endif %}>대전</option>
+    </select>
+    <button onclick="searchUser()">Search</button>
+</div>
 <table id="store-table">
     <thead>
         <tr>
@@ -71,7 +108,7 @@ Store Page
     <tbody>
         {% for store in stores %}
         <tr>
-            <td>{{ store.Id }}</td>
+            <td><a href="/crm/storedetail/?storeid={{ store.Id }}">{{ store.Id }}</a></td>
             <td>{{ store.Type }}</td>
             <td>{{ store.Name }}</td>
             <td>{{ store.Address }}</td>
