@@ -1,21 +1,22 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from database import (get_users, get_total_users, get_user_by_name, get_user_by_gender, 
                       get_user_by_name_and_gender, get_total_user_by_name, get_total_user_by_gender,
                       get_total_user_by_name_and_gender, get_orders, get_total_orders, get_orderItems, 
                       get_total_orderItems, get_items, get_total_items, get_stores, get_total_stores, 
                       get_userdetail, get_userorderdetail, get_orderitemdetail, get_order_by_date, 
                       get_total_order_by_date, get_orderdetail, get_itemdetail, get_storedetail, get_monthlyrevenue,
-                      get_item_monthlyrevenue, get_top5_stores, get_top5_items)
+                      get_item_monthlyrevenue, get_top5_stores, get_top5_items, get_regular_customers,
+                      get_store_by_name, get_total_store_by_name, get_item_by_type, get_total_item_by_type )
 import math
 
 app = Flask(__name__)
 
 app.secret_key = "thisissydneysproject"
-# app.permanent_session_lifetime = timedelta(minutes=10)
 
-# @app.route('/')
-# def home():
-#     return app.send_static_file('index.html')
+@app.route('/')
+def crm_main():
+    return redirect(url_for('crm_users'))
+
 
 ### user ###
 # user 목록   
@@ -118,29 +119,40 @@ def crm_itemdetail():
 # item 목록 
 @app.route('/crm/items/')
 def crm_items():
+    type = request.args.get('type')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=10, type=int)
     
-    total_items = get_total_items()
-    total_pages = math.ceil(total_items / per_page)
+    if type:
+        items = get_item_by_type(type, page, per_page)
+        total_items = get_total_item_by_type(type)
+        total_pages = math.ceil(total_items / per_page)
+    else:
+        items = get_items(page, per_page)
+        total_items = get_total_items()
+        total_pages = math.ceil(total_items / per_page)
     
-    items = get_items(page, per_page)
-    return render_template('items.html', items=items, page=page, per_page=per_page, total_pages=total_pages)
+    return render_template('items.html',type=type, items=items, page=page, per_page=per_page, total_pages=total_pages)
 
 ### store ###
 # store 목록 
 @app.route('/crm/stores/')
 def crm_stores():
-    cname = request.args.get('cname')
+    name = request.args.get('name')
     address = request.args.get('address')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=10, type=int)
     
-    total_stores = get_total_stores()
-    total_pages = math.ceil(total_stores / per_page)
+    if name:
+        stores = get_store_by_name(name, page, per_page)
+        total_stores = get_total_store_by_name(name)
+        total_pages = math.ceil(total_stores / per_page)
+    else:
+        stores = get_stores(page, per_page)
+        total_stores = get_total_stores()
+        total_pages = math.ceil(total_stores / per_page)
     
-    stores = get_stores(page, per_page)
-    return render_template('stores.html', stores=stores, page=page, per_page=per_page, total_pages=total_pages)
+    return render_template('stores.html', stores=stores, name=name, address=address, page=page, per_page=per_page, total_pages=total_pages)
 
 # store 상세
 @app.route('/crm/storedetail/')
@@ -148,7 +160,9 @@ def crm_storedetail():
     store_id = request.args.get('storeid')
     store_detail = get_storedetail(store_id)
     store_monthly_revenue = get_monthlyrevenue(store_id)
-    return render_template('storedetail.html', store_detail=store_detail, store_monthly_revenue=store_monthly_revenue)
+    regular_customers = get_regular_customers(store_id)
+    
+    return render_template('storedetail.html', store_detail=store_detail, store_monthly_revenue=store_monthly_revenue, regular_customers=regular_customers)
 
 
 if __name__ == "__main__":

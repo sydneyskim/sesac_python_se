@@ -10,6 +10,25 @@ Item Page
         background-color: #f8f8f8;
         color: #333;
     }
+    input[type="text"], select {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 150px;
+    }
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #555;
+    }
     table {
         width: 100%;
         border-collapse: collapse;
@@ -58,11 +77,23 @@ Item Page
         border: 1px solid #ddd;
         margin-left: -5px;
     }
+    .search-div {
+        height: 60px;
+    }
     table a:link, table a:visited {
         color: blue;
         text-decoration: none;
     }
 </style>
+<div class="search-div">
+    &nbsp; Type: <select id="type-select">
+        <option value="">Select Type</option>
+        <option value="Coffee" {% if request.args.get('type') == 'Coffee' %}selected{% endif %}>Coffee</option>
+        <option value="Juice" {% if request.args.get('type') == 'Juice' %}selected{% endif %}>Juice</option>
+        <option value="Cake" {% if request.args.get('type') == 'Cake' %}selected{% endif %}>Cake</option>
+    </select>
+    <button onclick="searchType()">Search</button>
+</div>
 <table id="item-table">
     <thead>
         <tr>
@@ -86,21 +117,28 @@ Item Page
 
 <div class="pagination">
     {% if page > 1 %}
-    <a href="/crm/items/?page={{ page - 1 }}&per_page={{ per_page }}">Previous</a>
+    <a href="/crm/items/?page={{ page - 1 }}&per_page={{ per_page }}&type={{ type or '' }}">Previous</a>
     {% endif %}
     
     {% for p in range(1, total_pages + 1) %}
         {% if p == page %}
             <span class="current">{{ p }}</span>
         {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
-            <a href="/crm/items/?page={{ p }}&per_page={{ per_page }}">{{ p }}</a>
+            <a href="/crm/items/?page={{ p }}&per_page={{ per_page }}&type={{ type or '' }}">{{ p }}</a>
         {% elif p == page - 3 or p == page + 3 %}
             <span>...</span>
         {% endif %}
     {% endfor %}
     
     {% if page < total_pages %}
-    <a href="/crm/items/?page={{ page + 1 }}&per_page={{ per_page }}">Next</a>
+    <a href="/crm/items/?page={{ page + 1 }}&per_page={{ per_page }}&type={{ type or '' }}">Next</a>
     {% endif %}
 </div>
+
+<script>
+    function searchType() {
+        const type = document.getElementById('type-select').value;
+        window.location.href = `/crm/items/?type=${encodeURIComponent(type)}`;
+    }
+</script>
 {% endblock %}

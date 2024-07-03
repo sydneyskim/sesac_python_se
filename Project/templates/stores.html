@@ -88,13 +88,8 @@ Store Page
     }
 </style>
 <div class="search-div">
-    &nbsp; Name: <input type="text" id="search-input" placeholder="Enter franchise café name" value="{{ request.args.get('name', '') }}">
-    &nbsp; Location: <select id="location-select">
-        <option value="">Select Location</option>
-        <option value="seoul" {% if request.args.get('Address', '').startswith('서울') %}selected{% endif %}>서울</option>
-        <option value="daejeon" {% if request.args.get('Address', '').startswith('대전') %}selected{% endif %}>대전</option>
-    </select>
-    <button onclick="searchUser()">Search</button>
+    &nbsp; Name: <input type="text" id="search-input" placeholder="Please enter café name" value="{{ request.args.get('name', '') }}">
+    <button onclick="searchStore()">Search</button>
 </div>
 <table id="store-table">
     <thead>
@@ -119,21 +114,28 @@ Store Page
 
 <div class="pagination">
     {% if page > 1 %}
-    <a href="/crm/stores/?page={{ page - 1 }}&per_page={{ per_page }}">Previous</a>
+    <a href="/crm/stores/?page={{ page - 1 }}&per_page={{ per_page }}&name={{ name or '' }}">Previous</a>
     {% endif %}
     
     {% for p in range(1, total_pages + 1) %}
         {% if p == page %}
             <span class="current">{{ p }}</span>
         {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
-            <a href="/crm/stores/?page={{ p }}&per_page={{ per_page }}">{{ p }}</a>
+            <a href="/crm/stores/?page={{ p }}&per_page={{ per_page }}&name={{ name or '' }}">{{ p }}</a>
         {% elif p == page - 3 or p == page + 3 %}
             <span>...</span>
         {% endif %}
     {% endfor %}
     
     {% if page < total_pages %}
-    <a href="/crm/stores/?page={{ page + 1 }}&per_page={{ per_page }}">Next</a>
+    <a href="/crm/stores/?page={{ page + 1 }}&per_page={{ per_page }}&name={{ name or '' }}">Next</a>
     {% endif %}
 </div>
+
+<script>
+    function searchStore() {
+        const name = document.getElementById('search-input').value;
+        window.location.href = `/crm/stores/?name=${encodeURIComponent(name)}`;
+    }
+</script>
 {% endblock %}

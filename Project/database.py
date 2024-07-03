@@ -205,18 +205,6 @@ def get_orderdetail(order_id):
     '''
     return get_query(query, (order_id,))
 
-# item 상세
-def get_itemdetail(item_id):
-    query = '''
-        SELECT 
-            "Name" AS Name , 
-            "UnitPrice" AS UnitPrice
-        FROM "items"
-        WHERE "Id" = ?;
-    '''
-    return get_query(query, (item_id,))
-
-
 ### Items ###
 # item 전체 가져오기
 def get_items(page, per_page):
@@ -230,12 +218,52 @@ def get_total_items():
     result = get_query(query)
     return result[0]['count'] if result else 0
 
+# item 종류 검색결과
+def get_item_by_type(type, page, per_page):
+    offset = (page - 1) * per_page
+    query = "SELECT * FROM items WHERE Type = ? LIMIT ? OFFSET ?"
+    return get_query(query, (type, per_page, offset))
+
+# item 종류 검색결과 count
+def get_total_item_by_type(type):
+    query = "SELECT COUNT(*) as count FROM items WHERE Type = ?"
+    result = get_query(query, (type,))
+    return result[0]['count'] if result else 0
+
+# item 상세
+def get_itemdetail(item_id):
+    query = '''
+        SELECT 
+            "Name" AS Name , 
+            "UnitPrice" AS UnitPrice
+        FROM "items"
+        WHERE "Id" = ?;
+    '''
+    return get_query(query, (item_id,))
 ### Stores ###
 # store 전체 가져오기
 def get_stores(page, per_page):
     offset = (page - 1) * per_page
     query = "SELECT * FROM stores LIMIT ? OFFSET ?"
     return get_query(query, (per_page, offset))
+
+# store 전체 count
+def get_total_stores():
+    query = "SELECT COUNT(*) as count FROM stores"
+    result = get_query(query)
+    return result[0]['count'] if result else 0
+
+# store 카페명 검색결과
+def get_store_by_name(name, page, per_page):
+    offset = (page -1) * per_page
+    query = "SELECT * FROM stores WHERE Name LIKE ? LIMIT ? OFFSET ? "
+    return get_query(query, ('%' + name + '%', per_page, offset))
+
+# store 이름 검색결과 count
+def get_total_store_by_name(name):
+    query = "SELECT COUNT(*) as count FROM stores WHERE Name LIKE ?"
+    result = get_query(query, ('%' + name + '%',))
+    return result[0]['count'] if result else 0
 
 # store 상세
 def get_storedetail(store_id):
@@ -248,13 +276,6 @@ def get_storedetail(store_id):
         WHERE "Id" = ?;
     '''
     return get_query(query, (store_id,))
-
-
-# store 전체 count
-def get_total_stores():
-    query = "SELECT COUNT(*) as count FROM stores"
-    result = get_query(query)
-    return result[0]['count'] if result else 0
 
 # 상점별 월간 매출
 def get_monthlyrevenue(store_id):
@@ -302,3 +323,25 @@ def get_item_monthlyrevenue(item_id):
     '''
     return get_query(query, (item_id,))
 
+# 단골고객 (1번 이상 방문 조건)
+def get_regular_customers(store_id):
+    query = '''
+        SELECT 
+            o.StoreId AS StoreId,
+            o.UserId AS UserId,
+            u.Name AS Name,
+            COUNT(o.Id) AS VisitCount
+        FROM 
+            orders o
+        JOIN 
+            users u ON o.UserId = u.Id
+        WHERE 
+            o.StoreId = ?
+        GROUP BY 
+            o.StoreId, o.UserId
+        HAVING 
+            VisitCount > 1
+        ORDER BY 
+            VisitCount DESC;
+    '''
+    return get_query(query, (store_id,))

@@ -89,4 +89,24 @@ Store Detail Page
             {% endfor %}
         </tbody>
     </table>
+    <p class="infos">단골 고객 목록</p>
+    <table id="regular-customer-table">
+        <thead>
+            <tr>
+                <th>User Id</th>
+                <th>Name</th>
+                <th>Frequency</th>
+            </tr>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rc in regular_customers %}
+            <tr>
+                <td><a href="/crm/userdetail/?userid={{ rc.UserId }}">{{ rc.UserId }}</a></td>
+                <td>{{ rc.Name }}</td>
+                <td>{{ rc.VisitCount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
