@@ -20,9 +20,9 @@ def get_query(query, params=()):
 ### Users ###
 # user 전체 가져오기
 def get_users(page, per_page):
-    offset = (page - 1) * per_page
+    offset = (page - 1) * per_page # 현재 페이지에서 데이터를 가져올 시작 위치
     query = "SELECT * FROM users LIMIT ? OFFSET ?"
-    return get_query(query, (per_page, offset))
+    return get_query(query, (per_page, offset))# get_query 함수호출 SQL 쿼리실행 결과반환, 매개변수는 튜플로 전달 
 
 # user 전체 count
 def get_total_users():
@@ -240,6 +240,7 @@ def get_itemdetail(item_id):
         WHERE "Id" = ?;
     '''
     return get_query(query, (item_id,))
+
 ### Stores ###
 # store 전체 가져오기
 def get_stores(page, per_page):
@@ -323,7 +324,7 @@ def get_item_monthlyrevenue(item_id):
     '''
     return get_query(query, (item_id,))
 
-# 단골고객 (1번 이상 방문 조건)
+# 단골고객 (2번 이상 방문 조건)
 def get_regular_customers(store_id):
     query = '''
         SELECT 

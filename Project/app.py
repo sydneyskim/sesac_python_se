@@ -6,22 +6,20 @@ from database import (get_users, get_total_users, get_user_by_name, get_user_by_
                       get_userdetail, get_userorderdetail, get_orderitemdetail, get_order_by_date, 
                       get_total_order_by_date, get_orderdetail, get_itemdetail, get_storedetail, get_monthlyrevenue,
                       get_item_monthlyrevenue, get_top5_stores, get_top5_items, get_regular_customers,
-                      get_store_by_name, get_total_store_by_name, get_item_by_type, get_total_item_by_type )
+                      get_store_by_name, get_total_store_by_name, get_item_by_type, get_total_item_by_type)
 import math
 
 app = Flask(__name__)
-
-app.secret_key = "thisissydneysproject"
 
 @app.route('/')
 def crm_main():
     return redirect(url_for('crm_users'))
 
-
 ### user ###
 # user 목록   
 @app.route('/crm/users/', methods=['GET'])
 def crm_users():
+    # http get 요청에서 쿼리 파라미터를 가져옴
     name = request.args.get('name')
     gender = request.args.get('gender')
     page = request.args.get('page', default=1, type=int)
@@ -29,22 +27,21 @@ def crm_users():
     
     if name and gender:
         users = get_user_by_name_and_gender(name, gender, page, per_page)
-        total_users = get_total_user_by_name_and_gender(name, gender)
-        total_pages = math.ceil(total_users / per_page)
+        total_users = get_total_user_by_name_and_gender(name, gender) 
     elif name:
         users = get_user_by_name(name, page, per_page)
         total_users = get_total_user_by_name(name)
-        total_pages = math.ceil(total_users / per_page)
     elif gender:
         users = get_user_by_gender(gender, page, per_page)
         total_users = get_total_user_by_gender(gender)
-        total_pages = math.ceil(total_users / per_page)
     else:
         users = get_users(page, per_page)
         total_users = get_total_users()
-        total_pages = math.ceil(total_users / per_page)
+    
+    total_pages = math.ceil(total_users / per_page) # 총 사용자 수를 10(페이지당 사용자 수)로 나누어 총 페이지 수를 계산(올림 처리)
     
     return render_template('users.html', users=users, name=name, gender=gender, page=page, per_page=per_page, total_pages=total_pages)
+    # 템플릿 렌더링, 사용자 목록, 검색 조건(name, gender), 현재 페이지(page), 페이지당 사용자 수(per_page), 총 페이지 수(total_pages)를 템플릿에 전달
 
 # user 상세
 @app.route('/crm/userdetail/')
@@ -67,12 +64,12 @@ def crm_orders():
     
     if date:
         total_orders = get_total_order_by_date(date)
-        total_pages = math.ceil(total_orders / per_page)
         orders = get_order_by_date(date, page, per_page)
     else:
         total_orders = get_total_orders()
-        total_pages = math.ceil(total_orders / per_page)
         orders = get_orders(page, per_page)
+        
+    total_pages = math.ceil(total_orders / per_page)
     
     return render_template('orders.html', orders=orders, date=date, page=page, per_page=per_page, total_pages=total_pages)
 
@@ -163,7 +160,6 @@ def crm_storedetail():
     regular_customers = get_regular_customers(store_id)
     
     return render_template('storedetail.html', store_detail=store_detail, store_monthly_revenue=store_monthly_revenue, regular_customers=regular_customers)
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

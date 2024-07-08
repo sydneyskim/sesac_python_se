@@ -44,7 +44,9 @@
 </head>
 <body>
     <nav>
-        <img src="{{ url_for('static', filename='images/secrm.jpg') }}" alt="CRM Logo">
+        <a href="{{ url_for('crm_users') }}">
+            <img src="{{ url_for('static', filename='images/secrm.jpg') }}" alt="CRM Logo">
+        </a>
         <a href="{{ url_for('crm_users') }}">User</a>
         <a href="{{ url_for('crm_orders') }}">Order</a>
         <a href="{{ url_for('crm_orderItems') }}">Order Item</a>

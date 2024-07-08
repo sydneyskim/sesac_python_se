@@ -58,7 +58,7 @@ User Page
     }
     .pagination a:first-child{
         border-radius: 4px 0px 0px 4px;
-        border-width: 1px 1px 1px 0px;
+        border-width: 1px 0px 1px 1px;
     }
     .pagination a:last-child{
         border-radius: 0px 4px 4px 0px;
@@ -86,13 +86,17 @@ User Page
 </style>
 
 <div class="search-div">
-    &nbsp; Name: <input type="text" id="search-input" placeholder="Please enter user's name" value="{{ request.args.get('name', '') }}">
-    &nbsp; Gender: <select id="gender-select">
-        <option value="">Select Gender</option>
-        <option value="Male" {% if request.args.get('gender') == 'Male' %}selected{% endif %}>Male</option>
-        <option value="Female" {% if request.args.get('gender') == 'Female' %}selected{% endif %}>Female</option>
-    </select>
-    <button onclick="searchUser()">Search</button>
+    <form method="GET" action="/crm/users/"> <!-- 폼 데이터를 GET 요청으로 전송하고, 폼 데이터가 전송될 URL을 지정 -->
+        &nbsp; Name: <input type="text" id="search-input" name="name" placeholder="Please enter user's name" value="{{ request.args.get('name', '') }}">
+        &nbsp; Gender: <select id="gender-select" name="gender">
+            <option value="">Select Gender</option>
+            <option value="Male" {% if request.args.get('gender') == 'Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if request.args.get('gender') == 'Female' %}selected{% endif %}>Female</option>
+            <!-- 쿼리 파라미터 'gender'가 'Male', 'Female' 선택된 상태로 표시 -->
+        </select>
+        <button type="submit">Search</button>
+         <!-- 검색 버튼. 클릭 시 폼이 제출됨 -->
+    </form>
 </div>
 
 <table id="user-table">
@@ -120,29 +124,26 @@ User Page
 
 <div class="pagination">
     {% if page > 1 %}
+    <!-- 현재 페이지가 첫페이지가 아닌 경우 'Previous' 표시 -->
     <a href="/crm/users/?page={{ page - 1 }}&per_page={{ per_page }}&name={{ name or '' }}&gender={{ gender or '' }}">Previous</a>
     {% endif %}
-
+    <!-- 현재 페이지 번호 -1 -> 이전 페이지로 이동 -->
     {% for p in range(1, total_pages + 1) %}
         {% if p == page %}
             <span class="current">{{ p }}</span>
         {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
             <a href="/crm/users/?page={{ p }}&per_page={{ per_page }}&name={{ name or '' }}&gender={{ gender or '' }}">{{ p }}</a>
+            <!-- 첫 페이지, 마지막 페이지, 현재 페이지 앞뒤 2페이지 링크 -->
         {% elif p == page - 3 or p == page + 3 %}
             <span>...</span>
+            <!-- 앞뒤 3부터는 ... 으로 대체 -->
         {% endif %}
     {% endfor %}
 
     {% if page < total_pages %}
     <a href="/crm/users/?page={{ page + 1 }}&per_page={{ per_page }}&name={{ name or '' }}&gender={{ gender or '' }}">Next</a>
+    <!-- 현재 페이지가 마지막 페이지보다 작은 경우에 'Next' 표시 -->
     {% endif %}
 </div>
 
-<script>
-    function searchUser() {
-        const name = document.getElementById('search-input').value;
-        const gender = document.getElementById('gender-select').value;
-        window.location.href = `/crm/users/?name=${encodeURIComponent(name)}&gender=${encodeURIComponent(gender)}`;
-    }
-</script>
 {% endblock %}
